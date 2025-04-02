@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsersModule } from './users/users.module';
+import { User } from './users/entities/user.entity';
 
 
 @Module({
@@ -16,7 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
           port: config.get<number>("DB_PORT"),
           host: 'localhost',
           synchronize: process.env.NODE_ENV !== 'production',
-          // entities: []
+          entities: [User]
         };
       }
     }),
@@ -25,6 +27,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       envFilePath: ".env.development"
       // envFilePath: process.env.NODE_ENV !== 'production' ? `.env.${process.env.NODE_ENV}` : ".env"
     }),
+    UsersModule,
   ],
 
 })
