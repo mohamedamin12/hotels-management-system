@@ -5,11 +5,12 @@ import { OAuthService } from './oauth.service';
 import { User } from 'src/users/entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports:[
     TypeOrmModule.forFeature([User]),
+    ConfigModule.forRoot(),
     JwtModule.registerAsync({
           inject: [ConfigService],
           useFactory: (config : ConfigService) => {
