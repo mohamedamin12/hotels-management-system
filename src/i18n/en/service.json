@@ -3,5 +3,8 @@
   "ALREADY_EXIST": "{module_name} already exist",
   "Registered": "Registered successful user",
   "Invalid_Email_Password": "invalid email or password",
-  "LoggedIN": "Logged in successfully"
+  "LoggedIN": "Logged in successfully",
+  "NOT_FOUND": "{module_name} Not found",
+  "CREATED_SUCCESS": "{module_name} created successfully",
+  "ForbiddenException": "access denied, you are not allowed"
 }

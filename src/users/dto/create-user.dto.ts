@@ -21,7 +21,7 @@ export class CreateUserDto {
   @ApiProperty({ description: "enter the password"})
   password: string;
 
-  @IsEnum( UserType , { message: 'Role must be one of: admin, user, moderator' })
+  @IsEnum( UserType , { message: 'Role must be one of: admin, user' })
   @IsNotEmpty()
   role: UserType;
 }
