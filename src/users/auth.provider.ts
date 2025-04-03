@@ -8,12 +8,16 @@ import { RegisterUserDto } from "./dto/register-user.dto";
 import * as bcrypt from "bcrypt";
 import { JwtPayloadType } from "src/utils/types";
 import { LoginUserDto } from "./dto/login-user.dto";
+import { randomBytes } from "crypto";
+import { MailService } from "src/mail/mail.service";
+import { ResetPasswordDto } from "./dto/reset-password.dto";
 
 @Injectable()
 export class AuthProvider {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
+    private readonly mailService: MailService,
     private readonly config: ConfigService,
   ) { }
 
@@ -75,7 +79,56 @@ export class AuthProvider {
 
   }
 
+  /**
+   * sending reset password
+  */
+  async sendResetPassword(email: string) {
+    const user = await this.userRepository.findOne({ where: { email } });
+    if (!user) throw new BadRequestException(`User with email : ${email} not found`);
 
+    user.resetPasswordToken = randomBytes(32).toString('hex');
+    const result = await this.userRepository.save(user);
+
+    const resetPasswordLink = `${this.config.get<string>('CLIENT_DOMAIN')}/reset-password/${user.id}/${result.resetPasswordToken}`;
+    this.mailService.resetPasswordTemplate(email, resetPasswordLink);
+    return {
+      message: 'Password rest link sent to your email, please check your inbox',
+    };
+  }
+
+  /**
+  * Get reset password link
+  */
+  async getResetPasswordLink(userId: number, resetPasswordToken: string) {
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) throw new BadRequestException("invalid link");
+
+    if (user.resetPasswordToken === null || user.resetPasswordToken !== resetPasswordToken)
+      throw new BadRequestException("invalid link");
+    return { message: "valid Link" }
+
+  }
+
+  /**
+   * reset the password
+   * @param dto password to reset the password
+   */
+  public async resetPassword(dto: ResetPasswordDto) {
+    const { userId, resetPasswordToken, newPassword } = dto;
+
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    if (!user) throw new BadRequestException("invalid link");
+
+    if (user.resetPasswordToken === null || user.resetPasswordToken !== resetPasswordToken)
+      throw new BadRequestException("invalid link");
+
+    const hashedPassword = await this.hashedPassword(newPassword);
+    user.password = hashedPassword;
+    user.resetPasswordToken = null;
+    await this.userRepository.save(user);
+
+    return { message: 'password reset successfully, please log in' };
+  }
 
   /**
    * hashed password

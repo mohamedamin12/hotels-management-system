@@ -2,7 +2,6 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -28,28 +27,26 @@ export class User {
   @Exclude()
   password: string;
 
-  @Column({ nullable: true, default: null })
-  profileImage: string;
-
-  @Column({ type: 'enum', enum: UserType, default: UserType.Student })
+  @Column({ type: 'enum', enum: UserType, default: UserType.User })
   role: UserType;
 
   @Column({ default: false })
   isAccountVerified: boolean;
+  
+  @Column({ type: 'varchar', nullable: true })
+  verificationToken: string | null;
 
-  @Column({ nullable: true })
-  verifictionToken: string;
-
-  @Column({ nullable: true })
-  resetPasswordToken: string;
+  @Column({ type: 'varchar', nullable: true })
+  resetPasswordToken: string | null;
 
   @CreateDateColumn({ type: 'timestamp', default: () => CURRENT_TIMESTAMP })
   createdAt: Date;
 
-  @UpdateDateColumn({
-    type: 'timestamp',
-    default: () => CURRENT_TIMESTAMP,
-    onUpdate: CURRENT_TIMESTAMP,
-  })
+  @UpdateDateColumn({ type: 'timestamp', default: () => CURRENT_TIMESTAMP, onUpdate: CURRENT_TIMESTAMP })
   updatedAt: Date;
+
+  @Column({ nullable: true, default: null })
+  profileImage: string;
+
+
 }
