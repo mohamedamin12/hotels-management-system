@@ -1,5 +1,5 @@
 export type JwtPayloadType = {
-  id : number,
+  id : string,
   role: string
 }
 

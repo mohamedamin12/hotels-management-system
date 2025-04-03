@@ -41,7 +41,7 @@ export class UsersService {
   * @param verificationToken verification token from the link
   * @returns success message
   */
-  public async verifyEmail(userId: number, verificationToken: string) {
+  public async verifyEmail(userId: string, verificationToken: string) {
     const user = await this.getCurrentUser(userId);
 
     if (user.verificationToken === null)
@@ -72,7 +72,7 @@ export class UsersService {
    * @param resetPasswordToken - token of the reset password
    * @returns a success message
    */
-  async getResetPassword(userId: number, resetPasswordToken: string) {
+  async getResetPassword(userId: string, resetPasswordToken: string) {
     return await this.authProvider.getResetPasswordLink(
       userId,
       resetPasswordToken,
@@ -93,7 +93,7 @@ export class UsersService {
  * @param id id of the logged in user
  * @returns the user from the database
  */
-  public async getCurrentUser(id: number): Promise<User> {
+  public async getCurrentUser(id: string): Promise<User> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) throw new NotFoundException("user not found");
     return user;

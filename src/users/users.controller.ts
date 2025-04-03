@@ -34,7 +34,7 @@ export class UsersController {
   //* GET: ~/api/users/verify-email/:id/:verificationToken
   @Get("verify-email/:id/:verificationToken")
   public verifyEmail(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ParseIntPipe) id: string,
     @Param('verificationToken') verificationToken: string
   ) {
     return this.usersService.verifyEmail(id, verificationToken);
@@ -50,7 +50,7 @@ export class UsersController {
   //* GET: ~/api/users/reset-password/:id/:resetPasswordToken
   @Get("reset-password/:id/:resetPasswordToken")
   public getResetPassword(
-    @Param("id", ParseIntPipe) id: number,
+    @Param("id", ParseIntPipe) id: string,
     @Param("resetPasswordToken") resetPasswordToken: string
   ) {
     return this.usersService.getResetPassword(id, resetPasswordToken);

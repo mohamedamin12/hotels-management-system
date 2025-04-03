@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { User } from './users/entities/user.entity';
 import { AcceptLanguageResolver, HeaderResolver, I18nModule, QueryResolver } from 'nestjs-i18n';
 import * as path from 'path';
+import { OAuthModule } from './oauth/oauth.module';
 
 
 @Module({
@@ -42,6 +43,7 @@ import * as path from 'path';
       // envFilePath: process.env.NODE_ENV !== 'production' ? `.env.${process.env.NODE_ENV}` : ".env"
     }),
     UsersModule,
+    OAuthModule
   ],
 
 })

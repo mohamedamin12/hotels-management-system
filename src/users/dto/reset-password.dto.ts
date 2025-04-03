@@ -12,7 +12,7 @@ export class ResetPasswordDto {
     @IsNumber()
     @IsNotEmpty()
     @Min(0)
-    userId:number;
+    userId:string;
 
     @IsString()
     @IsNotEmpty()

@@ -108,7 +108,7 @@ export class AuthProvider {
   /**
   * Get reset password link
   */
-  async getResetPasswordLink(userId: number, resetPasswordToken: string) {
+  async getResetPasswordLink(userId: string, resetPasswordToken: string) {
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user) throw new BadRequestException("invalid link");
 
