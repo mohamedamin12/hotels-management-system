@@ -1,0 +1,7 @@
+{
+  "Hello": "مرحبا",
+  "ALREADY_EXIST": "{module_name} موجود بالفعل",
+  "Registered": "تم انشاء الحساب بنجاح",
+  "LoggedIN": "تسجيل الدخول بنجاح",
+  "Invalid_Email_Password": "كلمة المرور او البريد الالكتروني غير صحيحح"
+}

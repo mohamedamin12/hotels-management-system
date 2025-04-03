@@ -8,6 +8,7 @@ import { AuthProvider } from './auth.provider';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { I18n, I18nContext } from 'nestjs-i18n';
 
 @Injectable()
 export class UsersService {
@@ -21,8 +22,8 @@ export class UsersService {
   * @param registerUser data for creating a new user
   * @returns JWt (access token)
   */
-  async register(registerUser: RegisterUserDto) {
-    return this.authProvider.register(registerUser);
+  async register(registerUser: RegisterUserDto , @I18n() i18n: I18nContext) {
+    return this.authProvider.register(registerUser , i18n);
   }
 
   /**
@@ -30,8 +31,8 @@ export class UsersService {
    * @param loginUser data for login user
    * @returns JWt (access token)
    */
-  async login(loginUser: LoginUserDto) {
-    return this.authProvider.login(loginUser);
+  async login(loginUser: LoginUserDto , @I18n() i18n: I18nContext) {
+    return this.authProvider.login(loginUser , i18n);
   }
 
   /**

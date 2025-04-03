@@ -3,8 +3,11 @@ import { AppModule } from './app.module';
 import { config } from 'dotenv';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { I18nService, I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n';
 
 config();
+
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -28,9 +31,12 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
 
-    app.enableCors({
-      origin:"http://localhost:3000"
-    })
+  app.enableCors({
+    origin: "http://localhost:3000"
+  })
+
+
+
 
   const documentation = SwaggerModule.createDocument(app, swagger);
   SwaggerModule.setup('swagger', app, documentation)

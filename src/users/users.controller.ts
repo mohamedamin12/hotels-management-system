@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, HttpStatus, ParseIntPipe, UseFilters } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { I18n, I18nContext, I18nValidationExceptionFilter } from 'nestjs-i18n';
 
 @Controller('api/v1/users/')
 export class UsersController {
@@ -11,15 +12,23 @@ export class UsersController {
 
   //* Post: ~/api/users/auth/register
   @Post('auth/register')
-  registerUser(@Body() body: RegisterUserDto) {
-    return this.usersService.register(body);
+  @UseFilters(new I18nValidationExceptionFilter())
+  registerUser(@Body() body: RegisterUserDto , @I18n() i18n: I18nContext) {
+    return this.usersService.register(body , i18n);
   }
 
   //* Post: ~/api/users/auth/login
   @Post('auth/login')
+  @UseFilters(new I18nValidationExceptionFilter())
   @HttpCode(HttpStatus.OK)
-  loginUser(@Body() body: LoginUserDto) {
-    return this.usersService.login(body);
+  loginUser(@Body() body: LoginUserDto ,  @I18n() i18n: I18nContext) {
+    return this.usersService.login(body , i18n);
+  }
+
+  @Get('test')
+  async testTranslation(@I18n() i18n: I18nContext) {
+    const translatedMessage = await i18n.translate('MinLength');
+    return { translatedMessage };
   }
 
   //* GET: ~/api/users/verify-email/:id/:verificationToken

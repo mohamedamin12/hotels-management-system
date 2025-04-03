@@ -1,0 +1,7 @@
+{
+  "Hello": "Hello",
+  "ALREADY_EXIST": "{module_name} already exist",
+  "Registered": "Registered successful user",
+  "Invalid_Email_Password": "invalid email or password",
+  "LoggedIN": "Logged in successfully"
+}

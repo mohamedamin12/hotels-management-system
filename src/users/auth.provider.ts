@@ -11,6 +11,7 @@ import { LoginUserDto } from "./dto/login-user.dto";
 import { randomBytes } from "crypto";
 import { MailService } from "src/mail/mail.service";
 import { ResetPasswordDto } from "./dto/reset-password.dto";
+import { I18n, I18nContext } from "nestjs-i18n";
 
 @Injectable()
 export class AuthProvider {
@@ -26,11 +27,15 @@ export class AuthProvider {
    * @param registerUser data for creating a new user
    * @returns JWt (access token)
    */
-  async register(registerUser: RegisterUserDto) {
+  async register(registerUser: RegisterUserDto, @I18n() i18n: I18nContext) {
     const { username, email, password } = registerUser;
 
     const user = await this.userRepository.findOne({ where: { email } });
-    if (user) throw new BadRequestException('User already exists');
+    if (user) throw new BadRequestException(
+      await i18n.t('service.ALREADY_EXIST', {
+        args: { module_name: i18n.lang === 'en' ? 'User' : 'المستخدم' },
+      })
+    ); // User already exists
 
     const hashedPassword = await this.hashedPassword(password);
     const newUser = this.userRepository.create({
@@ -45,7 +50,7 @@ export class AuthProvider {
     });
 
     return {
-      message: "Registered successful user",
+      message: await i18n.t('service.Registered'),
       data: newUser,
       token: token,
     };
@@ -56,15 +61,19 @@ export class AuthProvider {
    * @param loginUser data for login user
    * @returns JWt (access token)
    */
-  async login(loginUser: LoginUserDto) {
+  async login(loginUser: LoginUserDto, @I18n() i18n: I18nContext) {
     const { email, password } = loginUser;
 
     const user = await this.userRepository.findOne({ where: { email } });
-    if (!user) throw new BadRequestException('invalid email or password');
+    if (!user) throw new BadRequestException(
+      await i18n.t('service.Invalid_Email_Password')
+    );
 
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch)
-      throw new BadRequestException('invalid email or password');
+      throw new BadRequestException(
+        await i18n.t('service.Invalid_Email_Password')
+      );
 
     const token = await this.generateJwt({
       id: user.id,
@@ -72,7 +81,7 @@ export class AuthProvider {
     });
 
     return {
-      message: "Logged in successful user",
+      message: await i18n.t('service.LoggedIN'),
       data: user,
       token: token,
     };
