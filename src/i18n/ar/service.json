@@ -5,6 +5,7 @@
   "LoggedIN": "تسجيل الدخول بنجاح",
   "Invalid_Email_Password": "كلمة المرور او البريد الالكتروني غير صحيحح",
   "NOT_FOUND": "{module_name} غير موجود",
+  "FOUND_SUCCESS": "تم ارجاع {found_name} بنجاح",
   "CREATED_SUCCESS": "تم الانشاء بنجاح {module_name}",
   "ForbiddenException": "تم رفض الوصول، لا يُسمح لك",
   "DELETED_SUCCESS": "تم حذف {deleted_name} بنجاح"
