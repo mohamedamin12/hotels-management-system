@@ -2,7 +2,7 @@ import { BadRequestException, ForbiddenException, Injectable, NotFoundException 
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
+import { FindManyOptions, Like, Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { AuthProvider } from './auth.provider';
 import { RegisterUserDto } from './dto/register-user.dto';
@@ -107,13 +107,24 @@ export class UsersService {
    * @returns collection of users
    */
   async findAll(username?: string, pageNumber?: number, perPage?: number) {
-    return await this.usersRepository.find({
-      where: { username: Like(`%${username}%`) },
-      skip: (pageNumber - 1) * perPage,
-      take: perPage,
+    const page = Math.max(pageNumber ?? 1, 1);
+    const limit = Math.max(perPage ?? 10, 1);
+
+
+    const options: FindManyOptions<User> = {
       order: { createdAt: 'DESC' },
-    });
+      skip: (page - 1) * limit,
+      take: limit,
+    };
+
+
+    if (username) {
+      options.where = { username: Like(`%${username}%`) };
+    }
+
+    return await this.usersRepository.find(options);
   }
+
 
   /**
     * Create a new user
@@ -168,11 +179,15 @@ export class UsersService {
     * @param payload JWTPayload
     * @returns a success message
   */
-  public async delete(userId: string, payload: JwtPayloadType , i18n: I18nContext) {
+  public async delete(userId: string, payload: JwtPayloadType, i18n: I18nContext) {
     const user = await this.getCurrentUser(userId);
     if (user.id === payload?.id || payload.role === UserType.ADMIN) {
       await this.usersRepository.remove(user);
-      return { message: 'User has been deleted' }
+      return {
+        message: await i18n.t('service.DELETED_SUCCESS', {
+          args: { deleted_name: i18n.lang === 'en' ? 'User' : 'المستخدم' },
+        }),
+      }
     }
 
     throw new ForbiddenException(

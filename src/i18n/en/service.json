@@ -6,5 +6,6 @@
   "LoggedIN": "Logged in successfully",
   "NOT_FOUND": "{module_name} Not found",
   "CREATED_SUCCESS": "{module_name} created successfully",
+  "DELETED_SUCCESS": "{deleted_name} deleted successfully",
   "ForbiddenException": "access denied, you are not allowed"
 }

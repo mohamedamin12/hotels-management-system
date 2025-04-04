@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, HttpCode, HttpStatus, ParseIntPipe, UseFilters, Query, UseGuards, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, HttpCode, HttpStatus, ParseIntPipe, UseFilters, Query, UseGuards, Put, DefaultValuePipe } from '@nestjs/common';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
@@ -19,20 +19,20 @@ import { AuthGuard } from './guards/auth.guard';
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
-  //* Post: ~/api/users/auth/register
+  //* Post: ~/api/v1/users/auth/register
   @Post('auth/register')
   registerUser(@Body() body: RegisterUserDto, @I18n() i18n: I18nContext) {
     return this.usersService.register(body, i18n);
   }
 
-  //* Post: ~/api/users/auth/login
+  //* Post: ~/api/v1/users/auth/login
   @Post('auth/login')
   @HttpCode(HttpStatus.OK)
   loginUser(@Body() body: LoginUserDto, @I18n() i18n: I18nContext) {
     return this.usersService.login(body, i18n);
   }
 
-  //* GET: ~/api/users/verify-email/:id/:verificationToken
+  //* GET: ~/api/v1/users/verify-email/:id/:verificationToken
   @Get("verify-email/:id/:verificationToken")
   public verifyEmail(
     @Param('id', ParseIntPipe) id: string,
@@ -41,35 +41,37 @@ export class UsersController {
     return this.usersService.verifyEmail(id, verificationToken);
   }
 
-  //* POST: ~/api/users/forgot-password
+  //* POST: ~/api/v1/users/forgot-password
   @Post("forgot-password")
   @HttpCode(HttpStatus.OK)
   public forgotPassword(@Body() body: ForgotPasswordDto) {
     return this.usersService.sendResetPassword(body.email);
   }
 
-  //* GET: ~/api/users/reset-password/:id/:resetPasswordToken
+  //* GET: ~/api/v1/users/reset-password/:id/:resetPasswordToken
   @Get("reset-password/:id/:resetPasswordToken")
   public getResetPassword(
-    @Param("id", ParseIntPipe) id: string,
+    @Param("id") id: string,
     @Param("resetPasswordToken") resetPasswordToken: string
   ) {
     return this.usersService.getResetPassword(id, resetPasswordToken);
   }
 
-  //* POST: ~/api/users/reset-password
+  //* POST: ~/api/v1/users/reset-password
   @Post("reset-password")
   public resetPassword(@Body() body: ResetPasswordDto) {
     return this.usersService.resetPassword(body);
   }
 
-  //* Post ~/api/users
+  //* Post ~/api/v1/users
   @Post()
+  @Roles(UserType.ADMIN)
+  @UseGuards(AuthRolesGuard)
   create(@Body() createUserDto: CreateUserDto, @I18n() i18n: I18nContext) {
     return this.usersService.create(createUserDto, i18n);
   }
 
-  //* GET ~/api/users
+  //* GET ~/api/v1/users
   @Get()
   @Roles(UserType.ADMIN)
   @UseGuards(AuthRolesGuard)
@@ -81,14 +83,14 @@ export class UsersController {
     type: String,
   })
   getAllUsers(
-    @Query('username') username: string,
-    @Query('pageNumber', ParseIntPipe) pageNumber: number,
-    @Query('perPage', ParseIntPipe) perPage: number,
+    @Query('username') username?: string,
+    @Query('pageNumber', new DefaultValuePipe(1), ParseIntPipe) pageNumber?: number,
+    @Query('perPage', new DefaultValuePipe(10), ParseIntPipe) perPage?: number, 
   ) {
     return this.usersService.findAll(username, pageNumber, perPage);
   }
 
-  //* GET: ~/api/users/current-user
+  //* GET: ~/api/v1/users/current-user
   @Get("current-user")
   @UseGuards(AuthGuard)
   @ApiSecurity('bearer')
@@ -96,7 +98,7 @@ export class UsersController {
     return this.usersService.getCurrentUser(payload.id);
   }
 
-  //* PUT: ~/api/users
+  //* PUT: ~/api/v1/users
   @Put()
   @Roles(UserType.ADMIN, UserType.User)
   @UseGuards(AuthRolesGuard)
@@ -105,6 +107,7 @@ export class UsersController {
     return this.usersService.update(payload.id, updateUserDto);
   }
 
+  //* Delete: ~/api/v1/users/:id
   @Delete(":id")
   @Roles(UserType.ADMIN, UserType.User)
   @UseGuards(AuthRolesGuard)

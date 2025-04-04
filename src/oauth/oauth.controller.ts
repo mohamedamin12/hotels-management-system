@@ -24,7 +24,7 @@ export class OAuthController {
     const user = {
       userId: userObj.profile.id,
       email: userObj.profile.emails[0].value,
-      name: userObj.profile.displayName,
+      username: userObj.profile.displayName,
       photo: userObj.profile.photos[0].value,
     };
     return await this.callbackSign(user);
