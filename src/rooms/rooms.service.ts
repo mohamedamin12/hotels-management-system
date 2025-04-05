@@ -9,8 +9,10 @@ import { I18nContext } from 'nestjs-i18n';
 
 @Injectable()
 export class RoomsService {
-  @InjectRepository(Room) private readonly roomRepository: Repository<Room>;
-  @InjectRepository(Hotel) private readonly hotelRepository: Repository<Hotel>;
+  constructor(
+    @InjectRepository(Room) private readonly roomRepository: Repository<Room>,
+    @InjectRepository(Hotel) private readonly hotelRepository: Repository<Hotel>,
+  ) {}
   async create(createRoomDto: CreateRoomDto ,i18n: I18nContext) {
     const hotel = await this.hotelRepository.findOne({ where: { id: createRoomDto.hotelId } });
     if (!hotel) throw new NotFoundException(

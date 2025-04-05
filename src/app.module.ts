@@ -10,6 +10,8 @@ import { HotelsModule } from './hotels/hotels.module';
 import { Hotel } from './hotels/entities/hotel.entity';
 import { RoomsModule } from './rooms/rooms.module';
 import { Room } from './rooms/entities/room.entity';
+import { BookingModule } from './booking/booking.module';
+import { Booking } from './booking/entities/booking.entity';
 
 
 @Module({
@@ -37,7 +39,7 @@ import { Room } from './rooms/entities/room.entity';
           port: config.get<number>("DB_PORT"),
           host: 'localhost',
           synchronize: process.env.NODE_ENV !== 'production',
-          entities: [User , Hotel , Room]
+          entities: [User , Hotel , Room , Booking],
         };
       }
     }),
@@ -49,7 +51,8 @@ import { Room } from './rooms/entities/room.entity';
     UsersModule,
     OAuthModule,
     HotelsModule,
-    RoomsModule
+    RoomsModule,
+    BookingModule
   ],
 
 })

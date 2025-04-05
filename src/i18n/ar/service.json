@@ -9,5 +9,8 @@
   "CREATED_SUCCESS": "تم الانشاء بنجاح {module_name}",
   "ForbiddenException": "تم رفض الوصول، لا يُسمح لك",
   "DELETED_SUCCESS": "تم حذف {module_name} بنجاح",
-  "UPDATED_SUCCESS": "تم تحديث {module_name} بنجاح"
+  "UPDATED_SUCCESS": "تم تحديث {module_name} بنجاح",
+  "ALREADY_BOOKED": "تم حجز {module_name} بالفعل",
+  "NOT_ALLOWED": "غير مسموح لك",
+  "CANCELED_SUCCESS": "تم الغاء الحجز بنجاح"
 }

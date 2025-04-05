@@ -9,5 +9,8 @@
   "CREATED_SUCCESS": "{module_name} created successfully",
   "DELETED_SUCCESS": "{module_name} deleted successfully",
   "ForbiddenException": "access denied, you are not allowed",
-  "UPDATED_SUCCESS": "{module_name} updated successfully"
+  "UPDATED_SUCCESS": "{module_name} updated successfully",
+  "ALREADY_BOOKED": "{module_name} already booked",
+  "NOT_ALLOWED": "not allowed",
+  "CANCELED_SUCCESS": "canceled booked successfully"
 }

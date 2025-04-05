@@ -4,12 +4,14 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 
 import { UserType } from 'src/utils/enum';
 import { CURRENT_TIMESTAMP } from 'src/utils/constants';
 import { Exclude } from 'class-transformer';
+import { Booking } from 'src/booking/entities/booking.entity';
 
 
 @Entity('users')
@@ -48,5 +50,7 @@ export class User {
   @Column({ nullable: true, default: null })
   profileImage: string;
 
+  @OneToMany(() => Booking, (booking) => booking.user)
+  bookings: Booking[];
 
 }
