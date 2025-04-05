@@ -8,6 +8,8 @@ import * as path from 'path';
 import { OAuthModule } from './oauth/oauth.module';
 import { HotelsModule } from './hotels/hotels.module';
 import { Hotel } from './hotels/entities/hotel.entity';
+import { RoomsModule } from './rooms/rooms.module';
+import { Room } from './rooms/entities/room.entity';
 
 
 @Module({
@@ -35,7 +37,7 @@ import { Hotel } from './hotels/entities/hotel.entity';
           port: config.get<number>("DB_PORT"),
           host: 'localhost',
           synchronize: process.env.NODE_ENV !== 'production',
-          entities: [User , Hotel]
+          entities: [User , Hotel , Room]
         };
       }
     }),
@@ -46,7 +48,8 @@ import { Hotel } from './hotels/entities/hotel.entity';
     }),
     UsersModule,
     OAuthModule,
-    HotelsModule
+    HotelsModule,
+    RoomsModule
   ],
 
 })

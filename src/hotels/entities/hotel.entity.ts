@@ -1,5 +1,6 @@
+import { Room } from 'src/rooms/entities/room.entity';
 import { CURRENT_TIMESTAMP } from 'src/utils/constants';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 
 
 @Entity()
@@ -28,8 +29,8 @@ export class Hotel {
   @UpdateDateColumn({ type: 'timestamp', default: () => CURRENT_TIMESTAMP, onUpdate: CURRENT_TIMESTAMP })
   updatedAt: Date;
 
-  // @OneToMany(() => Room, (room) => room.hotel)
-  // rooms: Room[];
+  @OneToMany(() => Room, (room) => room.hotel , {onDelete: 'CASCADE'})
+  rooms: Room[];
 
   // @OneToMany(() => Review, (review) => review.hotel)
   // reviews: Review[];

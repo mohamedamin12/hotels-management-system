@@ -5,8 +5,9 @@
   "Invalid_Email_Password": "invalid email or password",
   "LoggedIN": "Logged in successfully",
   "NOT_FOUND": "{module_name} Not found",
-  "FOUND_SUCCESS": "{found_name} found successfully",
+  "FOUND_SUCCESS": "{module_name} found successfully",
   "CREATED_SUCCESS": "{module_name} created successfully",
-  "DELETED_SUCCESS": "{deleted_name} deleted successfully",
-  "ForbiddenException": "access denied, you are not allowed"
+  "DELETED_SUCCESS": "{module_name} deleted successfully",
+  "ForbiddenException": "access denied, you are not allowed",
+  "UPDATED_SUCCESS": "{module_name} updated successfully"
 }

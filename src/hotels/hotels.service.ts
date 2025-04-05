@@ -46,7 +46,7 @@ export class HotelsService {
   }
 
   async findById(id: string, i18n: I18nContext) {
-    const hotel = await this.hotelRepository.findOne({ where: { id } });
+    const hotel = await this.hotelRepository.findOne({ where: { id } , relations: ['rooms'] });
     if (!hotel) throw new NotFoundException(
       await i18n.t('service.NOT_FOUND', {
         args: { module_name: i18n.lang === 'en' ? 'Hotel' : 'الفندق' },
