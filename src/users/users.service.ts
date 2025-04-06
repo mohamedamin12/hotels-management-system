@@ -11,6 +11,8 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { JwtPayloadType } from 'src/utils/types';
 import { UserType } from 'src/utils/enum';
+import { join } from "node:path";
+import { unlinkSync } from 'node:fs';
 
 @Injectable()
 export class UsersService {
@@ -125,7 +127,6 @@ export class UsersService {
     return await this.usersRepository.find(options);
   }
 
-
   /**
     * Create a new user
     * @param body - the body of the request object
@@ -193,5 +194,41 @@ export class UsersService {
     throw new ForbiddenException(
       await i18n.t('service.ForbiddenException')
     );
+  }
+
+    /**
+   * Set Profile Image
+   * @param userId id of the logged in user
+   * @param newProfileImage profile image
+   * @returns the user from the database
+   */
+    public async setProfileImage(userId: string, newProfileImage: string) {
+      const user = await this.getCurrentUser(userId);
+      
+      if(user.profileImage === null) {
+        user.profileImage = newProfileImage;
+      } else {
+        await this.removeProfileImage(userId);
+        user.profileImage = newProfileImage;
+      }
+      
+      return this.usersRepository.save(user);
+    }
+
+    /**
+   * Remove Profile Image
+   * @param userId id of the logged in user
+   * @returns the user from the database
+   */
+  public async removeProfileImage(userId: string) {
+    const user = await this.getCurrentUser(userId);
+    if (user.profileImage === null)
+      throw new BadRequestException("there is no profile image");
+
+    const imagePath = join(process.cwd(), `./images/users/${user.profileImage}`);
+    unlinkSync(imagePath);
+
+    user.profileImage = null;
+    return this.usersRepository.save(user);
   }
 }

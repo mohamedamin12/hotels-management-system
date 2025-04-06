@@ -12,6 +12,7 @@ import { RoomsModule } from './rooms/rooms.module';
 import { Room } from './rooms/entities/room.entity';
 import { BookingModule } from './booking/booking.module';
 import { Booking } from './booking/entities/booking.entity';
+import { UploadsModule } from './uploads/uploads.module';
 
 
 @Module({
@@ -52,7 +53,8 @@ import { Booking } from './booking/entities/booking.entity';
     OAuthModule,
     HotelsModule,
     RoomsModule,
-    BookingModule
+    BookingModule,
+    UploadsModule
   ],
 
 })

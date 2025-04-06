@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Body, Param, Delete, HttpCode, HttpStatus, ParseIntPipe, UseFilters, Query, UseGuards, Put, DefaultValuePipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, HttpCode, HttpStatus, ParseIntPipe, UseFilters, Query, UseGuards, Put, DefaultValuePipe, UseInterceptors, UploadedFile, BadRequestException, Res } from '@nestjs/common';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { I18n, I18nContext } from 'nestjs-i18n';
-import { ApiQuery, ApiSecurity } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiQuery, ApiSecurity } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { JwtPayloadType } from 'src/utils/types';
@@ -14,6 +14,9 @@ import { AuthRolesGuard } from './guards/auth-roles.guard';
 import { UsersService } from './users.service';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { AuthGuard } from './guards/auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ImageUploadDto } from "./dto/image-upload.dto";
+import { Response } from 'express';
 
 @Controller('api/v1/users/')
 export class UsersController {
@@ -85,7 +88,7 @@ export class UsersController {
   getAllUsers(
     @Query('username') username?: string,
     @Query('pageNumber', new DefaultValuePipe(1), ParseIntPipe) pageNumber?: number,
-    @Query('perPage', new DefaultValuePipe(10), ParseIntPipe) perPage?: number, 
+    @Query('perPage', new DefaultValuePipe(10), ParseIntPipe) perPage?: number,
   ) {
     return this.usersService.findAll(username, pageNumber, perPage);
   }
@@ -117,6 +120,37 @@ export class UsersController {
     @CurrentUser() payload: JwtPayloadType,
     @I18n() i18n: I18nContext,
   ) {
-    return this.usersService.delete(id, payload , i18n);
+    return this.usersService.delete(id, payload, i18n);
   }
+
+  //* POST: ~/api/v1/users/upload-image
+  @Post('upload-image')
+  @UseGuards(AuthGuard)
+  @UseInterceptors(FileInterceptor('user-image'))
+  @ApiSecurity('bearer')
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({ type: ImageUploadDto, description: 'profile image' })
+  public uploadProfileImage(
+    @UploadedFile() file: Express.Multer.File,
+    @CurrentUser() payload: JwtPayloadType) {
+    if (!file) throw new BadRequestException("no image provided");
+    return this.usersService.setProfileImage(payload.id, file.filename);
+  }
+
+  //* DELETE: ~/api/v1/users/images/remove-profile-image
+  @Delete("images/remove-profile-image")
+  @UseGuards(AuthGuard)
+  @ApiSecurity('bearer')
+  public removeProfileImage(@CurrentUser() payload: JwtPayloadType) {
+    return this.usersService.removeProfileImage(payload.id);
+  }
+
+  //* GET: ~/api/v1/users/images/:image
+  @Get("images/:image")
+  @UseGuards(AuthGuard)
+  @ApiSecurity('bearer')
+  public showProfileImage(@Param('image') image: string, @Res() res: Response) {
+    return res.sendFile(image, { root: 'images/users' })
+  }
+
 }
