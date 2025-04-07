@@ -12,7 +12,7 @@ import { CURRENT_TIMESTAMP } from "src/utils/constants";
 
 @Entity({ name: 'reviews' })
 export class Review {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column({ type: 'int' })

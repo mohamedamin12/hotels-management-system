@@ -16,6 +16,7 @@ import { UploadsModule } from './uploads/uploads.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ReviewsModule } from './reviews/reviews.module';
+import { Review } from './reviews/entities/review.entity';
 
 
 @Module({
@@ -62,7 +63,7 @@ import { ReviewsModule } from './reviews/reviews.module';
           port: config.get<number>("DB_PORT"),
           host: 'localhost',
           synchronize: process.env.NODE_ENV !== 'production',
-          entities: [User, Hotel, Room, Booking],
+          entities: [User, Hotel, Room, Booking , Review],
         };
       }
     }),
