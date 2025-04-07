@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
@@ -13,6 +13,8 @@ import { Room } from './rooms/entities/room.entity';
 import { BookingModule } from './booking/booking.module';
 import { Booking } from './booking/entities/booking.entity';
 import { UploadsModule } from './uploads/uploads.module';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 
 @Module({
@@ -29,6 +31,25 @@ import { UploadsModule } from './uploads/uploads.module';
         new HeaderResolver(['x-lang']),
       ],
     }),
+
+    ThrottlerModule.forRoot([
+      {
+        name: 'short',
+        ttl: 4000, // 4 seconds
+        limit: 3, // 3 requests every 4 seconds for a client
+      },
+      {
+        name: 'medium',
+        ttl: 10000, // 10 seconds
+        limit: 7 // 7 requests every 10 seconds for a client
+      },
+      {
+        name: 'long',
+        ttl: 60000, // 60 seconds
+        limit: 15 // 15 requests every 60 seconds for a client
+      }
+    ]),
+
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
@@ -40,7 +61,7 @@ import { UploadsModule } from './uploads/uploads.module';
           port: config.get<number>("DB_PORT"),
           host: 'localhost',
           synchronize: process.env.NODE_ENV !== 'production',
-          entities: [User , Hotel , Room , Booking],
+          entities: [User, Hotel, Room, Booking],
         };
       }
     }),
@@ -57,5 +78,12 @@ import { UploadsModule } from './uploads/uploads.module';
     UploadsModule
   ],
 
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor
+    },
+  ],
+
 })
-export class AppModule {}
+export class AppModule { }

@@ -4,6 +4,7 @@ import { config } from 'dotenv';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { I18nService, I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n';
+import helmet from 'helmet';
 
 config();
 
@@ -18,6 +19,12 @@ async function bootstrap() {
     transform: true,
   }));
 
+  app.use(helmet());
+
+  app.enableCors({
+    origin: "http://localhost:3000"
+  })
+
   //* Swagger setup
   //* http://localhost:5000/swagger
   const swagger = new DocumentBuilder()
@@ -30,12 +37,6 @@ async function bootstrap() {
     .addSecurity('bearer', { type: 'http', scheme: 'bearer' })
     .addBearerAuth()
     .build();
-
-  app.enableCors({
-    origin: "http://localhost:3000"
-  })
-
-
 
 
   const documentation = SwaggerModule.createDocument(app, swagger);
