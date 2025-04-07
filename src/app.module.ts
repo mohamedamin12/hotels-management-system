@@ -15,6 +15,7 @@ import { Booking } from './booking/entities/booking.entity';
 import { UploadsModule } from './uploads/uploads.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ReviewsModule } from './reviews/reviews.module';
 
 
 @Module({
@@ -75,7 +76,8 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     HotelsModule,
     RoomsModule,
     BookingModule,
-    UploadsModule
+    UploadsModule,
+    ReviewsModule
   ],
 
   providers: [

@@ -12,6 +12,7 @@ import { UserType } from 'src/utils/enum';
 import { CURRENT_TIMESTAMP } from 'src/utils/constants';
 import { Exclude } from 'class-transformer';
 import { Booking } from 'src/booking/entities/booking.entity';
+import { Review } from 'src/reviews/entities/review.entity';
 
 
 @Entity('users')
@@ -52,5 +53,8 @@ export class User {
 
   @OneToMany(() => Booking, (booking) => booking.user)
   bookings: Booking[];
+
+  @OneToMany(() => Review, (review) => review.user)
+  reviews: Review[];
 
 }
