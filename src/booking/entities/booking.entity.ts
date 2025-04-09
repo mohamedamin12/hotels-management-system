@@ -7,11 +7,11 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { User } from 'src/users/entities/user.entity';
-import { Room } from 'src/rooms/entities/room.entity';
-import { BookingStatus } from 'src/utils/enum';
-import { CURRENT_TIMESTAMP } from 'src/utils/constants';
-import { Payment } from 'src/payment/entities/payment.entity';
+import { User } from '../../users/entities/user.entity';
+import { Room } from '../../rooms/entities/room.entity';
+import { BookingStatus } from '../../utils/enum';
+import { CURRENT_TIMESTAMP } from '../../utils/constants';
+import { Payment } from '../../payment/entities/payment.entity';
 
 
 @Entity('bookings')

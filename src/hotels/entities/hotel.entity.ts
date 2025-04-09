@@ -1,6 +1,6 @@
-import { Review } from 'src/reviews/entities/review.entity';
-import { Room } from 'src/rooms/entities/room.entity';
-import { CURRENT_TIMESTAMP } from 'src/utils/constants';
+import { Review } from '../../reviews/entities/review.entity';
+import { Room } from '../../rooms/entities/room.entity';
+import { CURRENT_TIMESTAMP } from '../../utils/constants';
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany, ManyToMany } from 'typeorm';
 
 

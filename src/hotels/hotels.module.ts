@@ -4,7 +4,7 @@ import { HotelsController } from './hotels.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Hotel } from './entities/hotel.entity';
 import { JwtModule } from '@nestjs/jwt';
-import { UsersModule } from 'src/users/users.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [

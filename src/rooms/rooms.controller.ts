@@ -3,10 +3,10 @@ import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { I18n, I18nContext } from 'nestjs-i18n';
-import { Roles } from 'src/users/decorators/user-role.decorator';
-import { UserType } from 'src/utils/enum';
-import { AuthRolesGuard } from 'src/users/guards/auth-roles.guard';
-import { AuthGuard } from 'src/users/guards/auth.guard';
+import { Roles } from '../users/decorators/user-role.decorator';
+import { UserType } from '../utils/enum';
+import { AuthRolesGuard } from '../users/guards/auth-roles.guard';
+import { AuthGuard } from '../users/guards/auth.guard';
 import { ApiSecurity } from '@nestjs/swagger';
 
 @Controller('api/v1/rooms')

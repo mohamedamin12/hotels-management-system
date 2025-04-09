@@ -3,7 +3,7 @@ import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Hotel } from 'src/hotels/entities/hotel.entity';
+import { Hotel } from '../hotels/entities/hotel.entity';
 import { Room } from './entities/room.entity';
 import { I18nContext } from 'nestjs-i18n';
 

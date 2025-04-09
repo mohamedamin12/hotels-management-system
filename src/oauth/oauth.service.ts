@@ -1,13 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Model } from 'mongoose';
-
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../users/entities/user.entity';
 import { Repository } from 'typeorm';
-import { UserType } from 'src/utils/enum';
-import { JwtPayloadType } from 'src/utils/types';
+import { UserType } from '../utils/enum';
+import { JwtPayloadType } from '../utils/types';
 const saltOrRounds = 10;
 
 type UserData = {

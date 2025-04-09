@@ -4,10 +4,10 @@ import { UpdateBookingDto } from './dto/update-booking.dto';
 import { Booking } from './entities/booking.entity';
 import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Room } from 'src/rooms/entities/room.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Room } from '../rooms/entities/room.entity';
+import { User } from '../users/entities/user.entity';
 import { I18nContext } from 'nestjs-i18n';
-import { BookingStatus, UserType } from 'src/utils/enum';
+import { BookingStatus, UserType } from '../utils/enum';
 
 
 

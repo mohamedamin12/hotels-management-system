@@ -3,8 +3,8 @@ import Stripe from 'stripe';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Payment } from './entities/payment.entity';
-import { Booking } from 'src/booking/entities/booking.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Booking } from '../booking/entities/booking.entity';
+import { User } from '../users/entities/user.entity';
 
 
 

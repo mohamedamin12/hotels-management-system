@@ -4,11 +4,11 @@ import { UpdateReviewDto } from './dto/update-review.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Review } from './entities/review.entity';
-import { HotelsService } from 'src/hotels/hotels.service';
-import { UsersService } from 'src/users/users.service';
+import { HotelsService } from '../hotels/hotels.service';
+import { UsersService } from '../users/users.service';
 import { I18nContext } from 'nestjs-i18n';
-import { JwtPayloadType } from 'src/utils/types';
-import { UserType } from 'src/utils/enum';
+import { JwtPayloadType } from '../utils/types';
+import { UserType } from '../utils/enum';
 
 @Injectable()
 export class ReviewsService {

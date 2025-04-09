@@ -9,8 +9,8 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { I18n, I18nContext } from 'nestjs-i18n';
-import { JwtPayloadType } from 'src/utils/types';
-import { UserType } from 'src/utils/enum';
+import { JwtPayloadType } from '../utils/types';
+import { UserType } from '../utils/enum';
 import { join } from "node:path";
 import { unlinkSync } from 'node:fs';
 

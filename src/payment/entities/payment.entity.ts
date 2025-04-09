@@ -1,7 +1,7 @@
 // src/modules/payment/entities/payment.entity.ts
 
-import { Booking } from 'src/booking/entities/booking.entity';
-import { User } from 'src/users/entities/user.entity';
+import { Booking } from '../../booking/entities/booking.entity';
+import { User } from '../../users/entities/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,

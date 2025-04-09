@@ -1,5 +1,5 @@
 import { IsDateString, IsEnum, IsOptional } from "class-validator";
-import { BookingStatus } from "src/utils/enum";
+import { BookingStatus } from "../../utils/enum";
 
 
 export class UpdateBookingDto {

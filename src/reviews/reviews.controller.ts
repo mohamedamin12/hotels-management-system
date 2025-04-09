@@ -4,10 +4,10 @@ import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { ApiSecurity } from '@nestjs/swagger';
 import { AuthRolesGuard } from 'src/users/guards/auth-roles.guard';
-import { Roles } from 'src/users/decorators/user-role.decorator';
-import { UserType } from 'src/utils/enum';
-import { CurrentUser } from 'src/users/decorators/current-user.decorator';
-import { JwtPayloadType } from 'src/utils/types';
+import { Roles } from '../users/decorators/user-role.decorator';
+import { UserType } from '../utils/enum';
+import { CurrentUser } from '../users/decorators/current-user.decorator';
+import { JwtPayloadType } from '../utils/types';
 import { I18n, I18nContext } from 'nestjs-i18n';
 
 @Controller('api/v1/reviews')

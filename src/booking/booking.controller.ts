@@ -2,12 +2,12 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query, Pa
 import { BookingService } from './booking.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
-import { Roles } from 'src/users/decorators/user-role.decorator';
-import { UserType } from 'src/utils/enum';
-import { AuthRolesGuard } from 'src/users/guards/auth-roles.guard';
-import { CurrentUser } from 'src/users/decorators/current-user.decorator';
+import { Roles } from '../users/decorators/user-role.decorator';
+import { UserType } from '../utils/enum';
+import { AuthRolesGuard } from '../users/guards/auth-roles.guard';
+import { CurrentUser } from '../users/decorators/current-user.decorator';
 import { I18n, I18nContext } from 'nestjs-i18n';
-import { User } from 'src/users/entities/user.entity';
+import { User } from '../users/entities/user.entity';
 import { ApiOperation, ApiQuery, ApiResponse, ApiSecurity } from '@nestjs/swagger';
 
 @Controller('api/v1/booking')

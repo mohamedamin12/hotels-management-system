@@ -6,9 +6,9 @@ import {
   UpdateDateColumn,
   ManyToOne
 } from "typeorm";
-import { Hotel } from "src/hotels/entities/hotel.entity";
-import { User } from "src/users/entities/user.entity";
-import { CURRENT_TIMESTAMP } from "src/utils/constants";
+import { Hotel } from "../../hotels/entities/hotel.entity";
+import { User } from "../../users/entities/user.entity";
+import { CURRENT_TIMESTAMP } from "../../utils/constants";
 
 @Entity({ name: 'reviews' })
 export class Review {

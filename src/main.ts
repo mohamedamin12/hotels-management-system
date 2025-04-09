@@ -3,7 +3,6 @@ import { AppModule } from './app.module';
 import { config } from 'dotenv';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
-import { I18nService, I18nValidationExceptionFilter, I18nValidationPipe } from 'nestjs-i18n';
 import helmet from 'helmet';
 
 config();

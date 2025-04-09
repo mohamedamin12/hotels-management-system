@@ -5,7 +5,7 @@ import { User } from './entities/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { MailModule } from 'src/mail/mail.module';
+import { MailModule } from '../mail/mail.module';
 import { AuthProvider } from './auth.provider';
 import { MulterModule } from "@nestjs/platform-express";
 import { diskStorage } from "multer";

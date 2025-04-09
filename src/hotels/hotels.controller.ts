@@ -3,9 +3,9 @@ import { HotelsService } from './hotels.service';
 import { CreateHotelDto } from './dto/create-hotel.dto';
 import { UpdateHotelDto } from './dto/update-hotel.dto';
 import { I18n, I18nContext } from 'nestjs-i18n';
-import { Roles } from 'src/users/decorators/user-role.decorator';
-import { UserType } from 'src/utils/enum';
-import { AuthRolesGuard } from 'src/users/guards/auth-roles.guard';
+import { Roles } from '../users/decorators/user-role.decorator';
+import { UserType } from '../utils/enum';
+import { AuthRolesGuard } from '../users/guards/auth-roles.guard';
 import { ApiOperation, ApiQuery, ApiResponse, ApiSecurity } from '@nestjs/swagger';
 
 @Controller('api/v1/hotels')

@@ -2,11 +2,11 @@ import { Controller, Post, Body, UseGuards, Patch, Param, Get } from '@nestjs/co
 import { PaymentService } from './payment.service';
 import { CreateStripePaymentDto } from './dto/create-stripe-payment.dto';
 import { CreateCashPaymentDto } from './dto/create-cash-payment.dto';
-import { Roles } from 'src/users/decorators/user-role.decorator';
-import { UserType } from 'src/utils/enum';
-import { CurrentUser } from 'src/users/decorators/current-user.decorator';
-import { JwtPayloadType } from 'src/utils/types';
-import { AuthRolesGuard } from 'src/users/guards/auth-roles.guard';
+import { Roles } from '../users/decorators/user-role.decorator';
+import { UserType } from '../utils/enum';
+import { CurrentUser } from '../users/decorators/current-user.decorator';
+import { JwtPayloadType } from '../utils/types';
+import { AuthRolesGuard } from '../users/guards/auth-roles.guard';
 
 @Controller('api/v1/payment')
 export class PaymentController {

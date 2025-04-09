@@ -8,12 +8,12 @@ import {
 } from 'typeorm';
 
 
-import { UserType } from 'src/utils/enum';
-import { CURRENT_TIMESTAMP } from 'src/utils/constants';
+import { UserType } from '../../utils/enum';
+import { CURRENT_TIMESTAMP } from '../../utils/constants';
 import { Exclude } from 'class-transformer';
-import { Booking } from 'src/booking/entities/booking.entity';
-import { Review } from 'src/reviews/entities/review.entity';
-import { Payment } from 'src/payment/entities/payment.entity';
+import { Booking } from '../../booking/entities/booking.entity';
+import { Review } from '../../reviews/entities/review.entity';
+import { Payment } from '../../payment/entities/payment.entity';
 
 
 @Entity('users')

@@ -6,10 +6,10 @@ import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { RegisterUserDto } from "./dto/register-user.dto";
 import * as bcrypt from "bcrypt";
-import { JwtPayloadType } from "src/utils/types";
+import { JwtPayloadType } from "../utils/types";
 import { LoginUserDto } from "./dto/login-user.dto";
 import { randomBytes } from "crypto";
-import { MailService } from "src/mail/mail.service";
+import { MailService } from "../mail/mail.service";
 import { ResetPasswordDto } from "./dto/reset-password.dto";
 import { I18n, I18nContext } from "nestjs-i18n";
 
