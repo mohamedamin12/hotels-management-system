@@ -69,6 +69,7 @@ export class UsersController {
   //* Post ~/api/v1/users
   @Post()
   @Roles(UserType.ADMIN)
+  @ApiSecurity('bearer')
   @UseGuards(AuthRolesGuard)
   create(@Body() createUserDto: CreateUserDto, @I18n() i18n: I18nContext) {
     return this.usersService.create(createUserDto, i18n);
@@ -82,8 +83,20 @@ export class UsersController {
   @ApiQuery({
     name: 'username',
     required: false,
-    description: 'Filter by title',
+    description: 'Filter by username',
     type: String,
+  })
+  @ApiQuery({
+    name: 'pageNumber',
+    required: false,
+    description: 'page number',
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'perPage',
+    required: false,
+    description: 'per page',
+    type: Number,
   })
   getAllUsers(
     @Query('username') username?: string,

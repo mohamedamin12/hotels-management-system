@@ -21,7 +21,12 @@
     "typeorm": "npm run build && npx typeorm -d dist/db/data-source.js",
     "migration:generate": "npm run typeorm -- migration:generate",
     "migration:run": "npm run typeorm -- migration:run",
-    "migration:revert": "npm run typeorm -- migration:revert"
+    "migration:revert": "npm run typeorm -- migration:revert",
+    "build:i18n": "tsc && npm run copy-i18n",
+    "copy-i18n": "cp -r src/i18n dist/i18n",
+    "copy-templates": "copyfiles -u 2 src/mail/templates/**/* dist/src/mail/templates",
+    "build:mail": "tsc && npm run copy-templates",
+    "postbuild": "copyfiles -u 1 src/mail/templates/**/* dist/mail/templates"
   },
   "dependencies": {
     "@nestjs-modules/mailer": "^2.0.2",
@@ -67,6 +72,7 @@
     "@types/node": "^22.10.7",
     "@types/passport-google-oauth20": "^2.0.16",
     "@types/supertest": "^6.0.2",
+    "copyfiles": "^2.4.1",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",

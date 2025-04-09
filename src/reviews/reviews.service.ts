@@ -59,7 +59,7 @@ export class ReviewsService {
     * @returns review from the database
     */
  private async findOne(id: string) {
-    const review = await this.reviewsRepository.findOne({ where: { id: Number(id) } });
+    const review = await this.reviewsRepository.findOne({ where: { id } });
     if (!review) throw new NotFoundException("review not found");
     return review;
   }

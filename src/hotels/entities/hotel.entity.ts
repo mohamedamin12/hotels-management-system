@@ -33,6 +33,6 @@ export class Hotel {
   @OneToMany(() => Room, (room) => room.hotel , {onDelete: 'CASCADE'})
   rooms: Room[];
 
-  @ManyToMany(() => Review, (review) => review.hotel)
+  @OneToMany(() => Review, (review) => review.hotel, { cascade: true })
   reviews: Review[];
 }

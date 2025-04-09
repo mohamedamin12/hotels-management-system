@@ -23,5 +23,6 @@ export class CreateUserDto {
 
   @IsEnum( UserType , { message: 'Role must be one of: admin, user' })
   @IsNotEmpty()
+  @ApiProperty({ description: "enter the role"})
   role: UserType;
 }

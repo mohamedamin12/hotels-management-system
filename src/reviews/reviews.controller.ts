@@ -31,7 +31,7 @@ export class ReviewsController {
   //* GET: ~/api/v1/reviews
   @Get()
   @UseGuards(AuthRolesGuard)
-  @Roles(UserType.ADMIN)
+  @Roles(UserType.ADMIN , UserType.User)
   public getAllReviews(
   ) {
     return this.reviewsService.getAll();

@@ -25,6 +25,7 @@ export class RoomsController {
   //*Get ~api/v1/rooms
   @Get()
   @UseGuards(AuthGuard)
+  @ApiSecurity('bearer')
   findAll(@I18n() i18n: I18nContext) {
     return this.roomsService.findAll(i18n);
   }
@@ -32,6 +33,7 @@ export class RoomsController {
   //*Get ~api/v1/rooms/:id
   @Get(':id')
   @UseGuards(AuthGuard)
+  @ApiSecurity('bearer')
   findOne(@Param('id') id: string, @I18n() i18n: I18nContext) {
     return this.roomsService.findOne(id, i18n);
   }
