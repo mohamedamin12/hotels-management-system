@@ -5,11 +5,13 @@ import {
   ManyToOne,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { User } from 'src/users/entities/user.entity';
 import { Room } from 'src/rooms/entities/room.entity';
 import { BookingStatus } from 'src/utils/enum';
 import { CURRENT_TIMESTAMP } from 'src/utils/constants';
+import { Payment } from 'src/payment/entities/payment.entity';
 
 
 @Entity('bookings')
@@ -29,7 +31,7 @@ export class Booking {
   @Column({ type: 'enum', enum: BookingStatus, default: BookingStatus.PENDING })
   status: BookingStatus;
 
-  @CreateDateColumn({ type: 'timestamp', default: () => CURRENT_TIMESTAMP})
+  @CreateDateColumn({ type: 'timestamp', default: () => CURRENT_TIMESTAMP })
   createdAt: Date;
 
   @UpdateDateColumn({ type: 'timestamp', default: () => CURRENT_TIMESTAMP, onUpdate: CURRENT_TIMESTAMP })
@@ -40,5 +42,9 @@ export class Booking {
 
   @ManyToOne(() => Room, (room) => room.bookings)
   room: Room;
+
+  @OneToMany(() => Payment, (payment) => payment.booking)
+  payments: Payment[];
+
 }
 

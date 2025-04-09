@@ -13,6 +13,7 @@ import { CURRENT_TIMESTAMP } from 'src/utils/constants';
 import { Exclude } from 'class-transformer';
 import { Booking } from 'src/booking/entities/booking.entity';
 import { Review } from 'src/reviews/entities/review.entity';
+import { Payment } from 'src/payment/entities/payment.entity';
 
 
 @Entity('users')
@@ -35,7 +36,7 @@ export class User {
 
   @Column({ default: false })
   isAccountVerified: boolean;
-  
+
   @Column({ type: 'varchar', nullable: true })
   verificationToken: string | null;
 
@@ -56,5 +57,9 @@ export class User {
 
   @OneToMany(() => Review, (review) => review.user)
   reviews: Review[];
+
+  @OneToMany(() => Payment, (payment) => payment.user)
+  payments: Payment[];
+
 
 }

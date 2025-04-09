@@ -9,6 +9,8 @@ import { User } from 'src/users/entities/user.entity';
 import { I18nContext } from 'nestjs-i18n';
 import { BookingStatus, UserType } from 'src/utils/enum';
 
+
+
 @Injectable()
 export class BookingService {
   constructor(
@@ -16,7 +18,8 @@ export class BookingService {
     @InjectRepository(Room) private readonly roomRepository: Repository<Room>,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) { }
-  async create(createBookingDto: CreateBookingDto, user: User , i18n: I18nContext) {
+
+  async create(createBookingDto: CreateBookingDto, user: User, i18n: I18nContext) {
     const { roomId, startDate, endDate, status } = createBookingDto;
 
     //* Check if the room exists
@@ -84,20 +87,20 @@ export class BookingService {
     const page = +query.page || 1;
     const limit = +query.limit || 10;
     const skip = (page - 1) * limit;
-  
+
     const where: any = {};
-  
+
 
     if (user.role === UserType.User) {
       where.user = { id: user.id };
     } else if (query.userId) {
       where.user = { id: query.userId };
     }
-  
+
     if (query.status) {
       where.status = query.status;
     }
-  
+
     const [data, total] = await this.bookingRepository.findAndCount({
       where,
       relations: ['user', 'room', 'room.hotel'],
@@ -105,7 +108,7 @@ export class BookingService {
       take: limit,
       order: { startDate: 'DESC' },
     });
-  
+
     return {
       total,
       page,
@@ -113,13 +116,13 @@ export class BookingService {
       data,
     };
   }
-  
+
   async findOne(id: string, user: User, i18n: I18nContext) {
     const booking = await this.bookingRepository.findOne({
       where: { id },
       relations: ['user', 'room'],
     });
-  
+
     if (!booking) {
       throw new NotFoundException(
         await i18n.t('service.NOT_FOUND', {
@@ -127,16 +130,16 @@ export class BookingService {
         }),
       );
     }
-  
+
     if (user.role !== UserType.ADMIN && booking.user.id !== user.id) {
       throw new ForbiddenException(
         await i18n.t('service.ForbiddenException'),
       );
     }
-  
+
     return booking;
   }
-  
+
   async update(
     id: string,
     updateBookingDto: UpdateBookingDto,
@@ -147,7 +150,7 @@ export class BookingService {
       where: { id },
       relations: ['room', 'user'],
     });
-  
+
     if (!booking) {
       throw new NotFoundException({
         message: await i18n.t('service.NOT_FOUND', {
@@ -155,25 +158,25 @@ export class BookingService {
         }),
       });
     }
-  
+
     if (user.role === UserType.User && booking.user?.id !== user.id) {
       throw new ForbiddenException({
         message: await i18n.t('service.NOT_ALLOWED'),
       });
     }
-  
+
     if (updateBookingDto.startDate && updateBookingDto.endDate) {
       const nights = Math.ceil(
         (new Date(updateBookingDto.endDate).getTime() -
           new Date(updateBookingDto.startDate).getTime()) /
-          (1000 * 60 * 60 * 24)
+        (1000 * 60 * 60 * 24)
       );
-  
+
       booking.startDate = new Date(updateBookingDto.startDate);
       booking.endDate = new Date(updateBookingDto.endDate);
       booking.totalPrice = nights * Number(booking.room.price);
     }
-  
+
     if (updateBookingDto.status) {
       booking.status = updateBookingDto.status as BookingStatus;
     }
@@ -183,9 +186,9 @@ export class BookingService {
         await i18n.t('service.NOT_ALLOWED'),
       );
     }
-  
+
     await this.bookingRepository.save(booking);
-  
+
     return {
       message: await i18n.t('service.UPDATED_SUCCESS', {
         args: { module_name: i18n.lang === 'en' ? 'Booking' : 'الحجز' },
@@ -199,7 +202,7 @@ export class BookingService {
       where: { id },
       relations: ['user', 'room'],
     });
-  
+
     if (!booking) {
       throw new NotFoundException({
         message: await i18n.t('service.NOT_FOUND', {
@@ -207,23 +210,24 @@ export class BookingService {
         }),
       });
     }
-  
+
     if (user.role === UserType.User && booking.user?.id !== user.id) {
       throw new ForbiddenException({
         message: await i18n.t('service.NOT_ALLOWED'),
       });
     }
-  
+
     booking.status = BookingStatus.CANCELLED;
-  
+
     await this.bookingRepository.save(booking);
-  
+
     return {
       message: await i18n.t('service.CANCELED_SUCCESS', {
         args: { room_name: booking.room?.name || '' },
       }),
       data: booking,
     };
-  }  
+  }
+
 
 }
