@@ -14,10 +14,12 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ReviewsModule } from './reviews/reviews.module';
 import { PaymentModule } from './payment/payment.module';
 import { dataSourceOptions as options } from '../db/data-source';
+import { AppController } from './app.controller';
 
 
 
 @Module({
+  controllers:[AppController],
   imports: [
     I18nModule.forRoot({
       fallbackLanguage: 'en',
