@@ -51,6 +51,7 @@ export class PaymentService {
       currency: 'egp',
       paymentMethod: 'stripe',
       status: 'pending',
+      sessionId: session.id,
       booking,
       user,
     });
@@ -74,24 +75,21 @@ export class PaymentService {
     });
   }
 
-  async confirmPayment(paymentId: string, userId: string) {
+  async confirmPaymentCash(paymentId: string, userId: string) {
     const payment = await this.paymentRepository.findOne({
       where: { id: paymentId },
       relations: ['user'],
     });
-  
+
     if (!payment) {
       throw new NotFoundException('Payment not found');
     }
-  
-    if (payment.user.id !== userId) {
-      throw new ForbiddenException('You are not allowed to confirm this payment');
-    }
-  
+
+
     if (payment.status === 'completed') {
       throw new BadRequestException('Payment already confirmed');
     }
-  
+
     payment.status = 'completed';
     return this.paymentRepository.save(payment);
   }
@@ -108,6 +106,30 @@ export class PaymentService {
       total: payments.length,
     };
   }
-  
+
+  async confirmPaymentCard(payload: any, sig: any, endpointSecret: string) {
+    let event;
+
+    try {
+      event = this.stripe.webhooks.constructEvent(payload, sig, endpointSecret);
+    } catch (err) {
+      console.log(`Webhook Error: ${err.message}`);
+      return;
+    }
+
+    switch (event.type) {
+      case 'checkout.session.completed':
+        const session = event.data.object as Stripe.Checkout.Session;
+        const payment = await this.paymentRepository.findOne({ where: { sessionId: session.id } });
+        payment.status = 'completed'
+
+        await this.paymentRepository.save(payment);
+
+        break;
+      default:
+        console.log(`Unhandled event type ${event.type}`);
+    }
+  }
+
 }
 

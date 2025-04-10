@@ -25,6 +25,9 @@ export class Payment {
   @Column()
   paymentMethod: 'stripe' | 'cash';
 
+  @Column({ nullable: true })
+  sessionId: string;
+
   @Column({ default: 'pending' })
   status: 'pending' | 'completed' | 'failed';
 

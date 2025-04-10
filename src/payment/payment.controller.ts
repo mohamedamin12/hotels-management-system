@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Patch, Param, Get } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Patch, Param, Get, Headers, Req, RawBodyRequest } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { CreateStripePaymentDto } from './dto/create-stripe-payment.dto';
 import { CreateCashPaymentDto } from './dto/create-cash-payment.dto';
@@ -35,14 +35,29 @@ export class PaymentController {
 
 
   @Patch('confirm/:paymentId')
-  @Roles(UserType.User)
+  @Roles(UserType.ADMIN)
   @UseGuards(AuthRolesGuard)
-  async confirmPayment(
+  async confirmPaymentCash(
     @Param('paymentId') paymentId: string,
     @CurrentUser() user: any
   ) {
-    return this.paymentService.confirmPayment(paymentId, user.id);
+    return this.paymentService.confirmPaymentCash(paymentId, user.id);
   }
+
+
+  @Post()
+  confirmPaymentCard(
+    @Headers('stripe-signature') sig,
+    @Req() request: RawBodyRequest<Request>,
+  ) {
+    const endpointSecret =
+      'whsec_05786c1488263669988a7a4e4d3c30fdf1ba2ee8d838325622461b5623bfec5e';
+
+    const payload = request.rawBody;
+
+    return this.paymentService.confirmPaymentCard(payload, sig, endpointSecret);
+  }
+
 
   @Get()
   @Roles(UserType.ADMIN)

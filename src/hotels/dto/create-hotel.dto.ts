@@ -1,10 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsString, IsNotEmpty, IsOptional, IsNumber } from "class-validator";
-import { I18nService } from "nestjs-i18n";
 
 export class CreateHotelDto {
 
-  constructor(private readonly i18n: I18nService) {}
   
     @IsString()
     @IsNotEmpty()
