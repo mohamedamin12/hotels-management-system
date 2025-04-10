@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Payment } from './entities/payment.entity';
 import { Booking } from '../booking/entities/booking.entity';
 import { User } from '../users/entities/user.entity';
+import { UserType } from 'src/utils/enum';
 
 
 
@@ -76,6 +77,13 @@ export class PaymentService {
   }
 
   async confirmPaymentCash(paymentId: string, userId: string) {
+
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+
+    if (!user || user.role !== UserType.ADMIN) {
+      throw new ForbiddenException('You do not have permission to perform this action');
+    }
+
     const payment = await this.paymentRepository.findOne({
       where: { id: paymentId },
       relations: ['user'],
@@ -83,6 +91,10 @@ export class PaymentService {
 
     if (!payment) {
       throw new NotFoundException('Payment not found');
+    }
+
+    if (payment.paymentMethod !== 'cash') {
+      throw new BadRequestException('Only cash payments can be confirmed');
     }
 
 
