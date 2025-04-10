@@ -19,7 +19,7 @@ export class ReviewsController {
   //* POST: ~/api/v1/reviews/:hotelId
   @Post(':hotelId')
   @UseGuards(AuthRolesGuard)
-  @Roles(UserType.ADMIN, UserType.User)
+  @Roles(UserType.User)
   public createNewReview(
     @Param('hotelId') hotelId: string,
     @Body() body: CreateReviewDto,
