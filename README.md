@@ -1,98 +1,125 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Hotel Management System
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A comprehensive hotel management system built with Node.js, TypeScript, PostgreSQL, and various third-party integrations like Stripe for payments, Multer for file uploads, and Nodemailer for email handling. The system allows hotel admins to manage hotels, rooms, bookings, payments, and reviews. Users can create bookings, make payments, and leave reviews.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- **User Management**: Register, login, and password management with Google authentication and forgot password functionality.
+- **Hotel Management**: Admin can create, update, and delete hotels.
+- **Room Management**: Admin can create, update, and delete rooms; Users can view room details.
+- **Booking Management**: Users can create, update, delete, and view bookings. Admins can manage all bookings.
+- **Payment Management**: Cash and Stripe payment options. Admin can update payment status from pending to completed.
+- **Review Management**: Users can create, update, and delete their own reviews. Admin can manage all reviews.
+- **Internationalization (i18n)**: Multi-language support using i18n.
+- **Email Handling**: Nodemailer for sending emails with custom templates using EJS.
+- **File Uploads**: Multer for file uploads (e.g., for hotel and room images).
+- **Security**: Helmet, CORS, and Rate Limiting for enhanced security.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Technologies Used
 
-## Project setup
+- **Backend**: Node.js, Express.js , Nestjs
+- **Database**: PostgreSQL
+- **Authentication**: JWT, Google OAuth
+- **Payment Gateway**: Stripe, Cash payments
+- **File Upload**: Multer
+- **Internationalization**: i18n
+- **Email**: Nodemailer, EJS
+- **Testing**: Swagger, Postman
+- **Security**: Helmet, CORS, Rate Limiting
 
-```bash
-$ npm install
+## Installation
+
+### Prerequisites
+
+- Node.js
+- PostgreSQL
+- Stripe API keys (for Stripe payment functionality)
+
+### Steps to Run Locally
+
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/yourusername/hotel-management-system.git
+    ```
+
+2. Navigate to the project folder:
+    ```bash
+    cd hotel-management-system
+    ```
+
+3. Install dependencies:
+    ```bash
+    npm install
+    ```
+
+4. Create a `.env` file in the root directory and add your environment variables (see `.env.example`).
+
+5. Run the application:
+    ```bash
+    npm start
+    ```
+
+6. Access the app at `http://localhost:5000`.
+
+## API Documentation
+
+This project includes a RESTful API for interacting with the hotel management system.
+
+### Available Endpoints
+
+- **Authentication**: `/api/v1/users/auth/login`, `/api/v1/users/auth/register`, `/auth/google/sign`, `/api/v1/users/forgot-password`
+- **Hotels**: `/api/v1/hotels`, `/api/v1/hotels/:id`
+- **Rooms**: `/api/v1/rooms`, `/api/v1/rooms/:id`
+- **Bookings**: `/api/v1/bookings`, `/api/v1/bookings/:id`
+- **Payments**: `/api/v1/payment/stripe`, `/api/v1/payment/cash`
+- **Reviews**: `/api/v1/reviews`, `/api/v1/reviews/:id`
+
+You can view the full API documentation using **Swagger** [here](http://localhost:5000/swagger).
+You can view the full API documentation using **Postman** [here](https://documenter.getpostman.com/view/34351164/2sB2cYbKwM).
+
+## How to Contribute
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-name`).
+3. Commit your changes (`git commit -m 'Add new feature'`).
+4. Push to the branch (`git push origin feature-name`).
+5. Open a Pull Request.
+
+## ENV File
 ```
+# 🛢️ Database
+DB_DATABASE=your_database_name
+DB_USERNAME=your_db_username
+DB_PASSWORD=your_db_password
+DB_PORT=5432
 
-## Compile and run the project
+NODE_ENV=development
+PORT=5000
 
-```bash
-# development
-$ npm run start
+# 🔐 JWT Authentication
+JWT_SECRET=your_jwt_secret_key
+JWT_EXPIRES_IN=1d
 
-# watch mode
-$ npm run start:dev
+# 📬 SMTP (Email Service)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USERNAME=your_email@gmail.com
+SMTP_PASSWORD=your_email_app_password
 
-# production mode
-$ npm run start:prod
-```
+# 🌍 Domains
+DOMAIN=http://localhost:5000
+CLIENT_DOMAIN=http://localhost:3000
 
-## Run tests
+# 🔐 Google OAuth
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_CALLBACK_URL=http://localhost:5000/auth/google/callback
 
-```bash
-# unit tests
-$ npm run test
+# 💳 Stripe Payment
+STRIPE_SECRET_KEY=your_stripe_secret_key
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```      
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+MIT License. See LICENSE file for more details.
