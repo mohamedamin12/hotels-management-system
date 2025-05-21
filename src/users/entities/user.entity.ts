@@ -43,6 +43,9 @@ export class User {
   @Column({ type: 'varchar', nullable: true })
   resetPasswordToken: string | null;
 
+  @Column({ type: 'varchar', nullable: true })
+  refreshToken: string | null;
+
   @CreateDateColumn({ type: 'timestamp', default: () => CURRENT_TIMESTAMP })
   createdAt: Date;
 

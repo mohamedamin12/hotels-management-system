@@ -3,6 +3,7 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { I18n, I18nContext } from 'nestjs-i18n';
 import { ApiBody, ApiConsumes, ApiQuery, ApiSecurity } from '@nestjs/swagger';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -64,6 +65,13 @@ export class UsersController {
   @Post("reset-password")
   public resetPassword(@Body() body: ResetPasswordDto) {
     return this.usersService.resetPassword(body);
+  }
+
+  //* POST: ~/api/v1/users/auth/refresh-token
+  @Post('auth/refresh-token')
+  @HttpCode(HttpStatus.OK)
+  refreshToken(@Body() body: RefreshTokenDto) {
+    return this.usersService.refreshToken(body.refreshToken);
   }
 
   //* Post ~/api/v1/users

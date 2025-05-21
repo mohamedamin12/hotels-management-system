@@ -44,15 +44,27 @@ export class AuthProvider {
       password: hashedPassword,
     });
     await this.userRepository.save(newUser);
-    const token = await this.generateJwt({
+
+    const payload = {
       id: newUser.id,
       role: newUser.role,
-    });
+    };
+
+    // Generate access token
+    const accessToken = await this.generateJwt(payload);
+    
+    // Generate refresh token
+    const refreshToken = await this.generateRefreshToken(payload);
+    
+    // Save refresh token to the database
+    newUser.refreshToken = refreshToken;
+    await this.userRepository.save(newUser);
 
     return {
       message: await i18n.t('service.Registered'),
       data: newUser,
-      token: token,
+      accessToken: accessToken,
+      refreshToken: refreshToken
     };
   }
 
@@ -75,15 +87,26 @@ export class AuthProvider {
         await i18n.t('service.Invalid_Email_Password')
       );
 
-    const token = await this.generateJwt({
+    const payload = {
       id: user.id,
       role: user.role,
-    });
+    };
+
+    // Generate access token
+    const accessToken = await this.generateJwt(payload);
+    
+    // Generate refresh token
+    const refreshToken = await this.generateRefreshToken(payload);
+    
+    // Save refresh token to the database
+    user.refreshToken = refreshToken;
+    await this.userRepository.save(user);
 
     return {
       message: await i18n.t('service.LoggedIN'),
       data: user,
-      token: token,
+      accessToken: accessToken,
+      refreshToken: refreshToken
     };
 
   }
@@ -152,7 +175,43 @@ export class AuthProvider {
  * @param payload jwt token
  * @returns token
  */
-  private generateJwt(payload: JwtPayloadType) {
-    return this.jwtService.signAsync(payload);
+  /**
+   * generate JWT access token
+   * @param payload jwt token payload
+   * @returns access token
+   */
+  public generateJwt(payload: JwtPayloadType) {
+    return this.jwtService.signAsync(payload, {
+      secret: this.config.get<string>('JWT_SECRET'),
+      expiresIn: this.config.get<string>('JWT_EXPIRES') || '15m'
+    });
+  }
+
+  /**
+   * generate JWT refresh token
+   * @param payload jwt token payload
+   * @returns refresh token
+   */
+  public generateRefreshToken(payload: JwtPayloadType) {
+    return this.jwtService.signAsync(payload, {
+      secret: this.config.get<string>('JWT_REFRESH_SECRET'),
+      expiresIn: this.config.get<string>('JWT_REFRESH_EXPIRES') || '7d'
+    });
+  }
+
+  /**
+   * verify refresh token
+   * @param refreshToken refresh token to verify
+   * @returns decoded token payload
+   */
+  public async verifyRefreshToken(refreshToken: string) {
+    try {
+      const payload = await this.jwtService.verifyAsync(refreshToken, {
+        secret: this.config.get<string>('JWT_REFRESH_SECRET')
+      });
+      return payload;
+    } catch (error) {
+      throw new BadRequestException('Invalid refresh token');
+    }
   }
 }

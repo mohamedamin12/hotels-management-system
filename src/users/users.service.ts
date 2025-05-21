@@ -93,6 +93,50 @@ export class UsersService {
   }
 
   /**
+   * Refresh token
+   * @param refreshToken refresh token provided by the user
+   * @returns new access token and refresh token
+   */
+  async refreshToken(refreshToken: string) {
+    try {
+      // Verify the refresh token
+      const payload = await this.authProvider.verifyRefreshToken(refreshToken);
+      
+      // Find the user
+      const user = await this.getCurrentUser(payload.id);
+      
+      // Check if the provided refresh token matches what's stored in the database
+      if (user.refreshToken !== refreshToken) {
+        throw new BadRequestException('Invalid refresh token');
+      }
+      
+      // Generate new tokens
+      const newPayload = {
+        id: user.id,
+        role: user.role,
+      };
+      
+      // Generate new access token
+      const accessToken = await this.authProvider.generateJwt(newPayload);
+      
+      // Generate new refresh token
+      const newRefreshToken = await this.authProvider.generateRefreshToken(newPayload);
+      
+      // Update refresh token in database
+      user.refreshToken = newRefreshToken;
+      await this.usersRepository.save(user);
+      
+      return {
+        message: 'Tokens refreshed successfully',
+        token: accessToken,
+        refreshToken: newRefreshToken
+      };
+    } catch (error) {
+      throw new BadRequestException('Invalid refresh token');
+    }
+  }
+
+  /**
      * Get current user (logged in user)
      * @param id id of the logged in user
      * @returns the user from the database
